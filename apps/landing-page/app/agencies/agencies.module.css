@@ -1,0 +1,15 @@
+.pageTitle {
+  margin-top: 1rem;
+  max-width: 760px;
+  font-family: var(--font-dm-sans), Arial, sans-serif;
+  font-size: clamp(2.4rem, 5vw, 3.55rem);
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.05em;
+}
+
+.uiHeading {
+  font-family: var(--font-dm-sans), Arial, sans-serif;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+}

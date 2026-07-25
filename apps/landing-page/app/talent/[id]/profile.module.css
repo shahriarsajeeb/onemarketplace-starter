@@ -1,0 +1,25 @@
+.profileTitle {
+  margin: 0;
+  font-family: var(--font-dm-sans), Arial, sans-serif;
+  font-size: clamp(2.25rem, 5vw, 3.5rem);
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.045em;
+}
+
+.sectionTitle {
+  margin: 0;
+  font-family: var(--font-dm-sans), Arial, sans-serif;
+  font-size: 1.35rem;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.025em;
+}
+
+.itemTitle {
+  font-family: var(--font-dm-sans), Arial, sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: -0.015em;
+}

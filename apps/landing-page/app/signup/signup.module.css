@@ -1,0 +1,22 @@
+.title {
+  margin: 0;
+  font-family: var(--font-dm-sans), Arial, sans-serif;
+  font-size: clamp(2.5rem, 4vw, 4rem);
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.045em;
+}
+
+.roleTitle {
+  font-family: var(--font-dm-sans), Arial, sans-serif;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+}
+
+.formTitle {
+  font-family: var(--font-dm-sans), Arial, sans-serif;
+  font-size: clamp(2rem, 4vw, 2.75rem);
+  font-weight: 600;
+  line-height: 1.08;
+  letter-spacing: -0.04em;
+}
