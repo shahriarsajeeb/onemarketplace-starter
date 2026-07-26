@@ -126,6 +126,26 @@ export function AccountDropdown() {
           </div>
 
           <div className="border-t border-black/7 p-2">
+            <Link
+              href="/settings?section=agency"
+              role="menuitem"
+              onClick={() => setOpen(false)}
+              className="flex items-center gap-3 rounded-xl px-3 py-3 transition hover:bg-[#f4f6f2]"
+            >
+              <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#f0f3ee] text-[#5d765a]">
+                <Icon icon="solar:buildings-2-linear" width="19" />
+              </span>
+              <span className="min-w-0 flex-1">
+                <strong className="block text-xs">Create an agency</strong>
+                <span className="mt-0.5 block truncate text-[10px] text-[#858a82]">
+                  Build and manage a team
+                </span>
+              </span>
+              <Icon icon="solar:arrow-right-up-linear" width="15" />
+            </Link>
+          </div>
+
+          <div className="border-t border-black/7 p-2">
             <button
               type="button"
               role="menuitem"

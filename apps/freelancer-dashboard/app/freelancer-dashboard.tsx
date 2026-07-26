@@ -216,7 +216,7 @@ export function FreelancerDashboard() {
                 </div>
                 <button
                   type="button"
-                  onClick={() => redirect("/settings")}
+                  onClick={() => redirect("/settings?section=connects")}
                   className="mt-3 w-full cursor-pointer rounded-xl border border-black/10 py-2.5 text-xs font-semibold hover:bg-black/3"
                 >
                   Buy Connects

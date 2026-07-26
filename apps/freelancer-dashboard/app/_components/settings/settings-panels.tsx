@@ -1,6 +1,7 @@
 "use client";
 
 import { Icon } from "@iconify/react";
+import { useState } from "react";
 import { connectsHistory, earningsHistory } from "./settings-data";
 
 const Panel = ({ title, description, children }: { title: string; description: string; children: React.ReactNode }) => (
@@ -69,6 +70,153 @@ export function WithdrawalPanel({ onWithdraw }: { onWithdraw: () => void }) {
         </article>
         <button type="button" className="flex cursor-pointer items-center justify-center gap-2 rounded-2xl border border-dashed border-black/15 p-5 text-sm font-semibold text-[#52784f] hover:bg-[#f8f9f6]"><Icon icon="solar:add-circle-linear" width="20" /> Add withdrawal method</button>
         <div className="rounded-xl bg-[#f1f3ef] p-4 text-xs leading-6 text-[#70766e]"><strong className="text-[#343833]">Withdrawal schedule:</strong> Automatic withdrawals are currently off. Your balance remains available until you withdraw it manually.</div>
+      </div>
+    </Panel>
+  );
+}
+
+export function AgencyPanel() {
+  const [setupStarted, setSetupStarted] = useState(false);
+  const [created, setCreated] = useState(false);
+  const [agencyName, setAgencyName] = useState("");
+
+  if (created) {
+    return (
+      <Panel
+        title="Agency workspace created"
+        description="Your new agency is ready for its profile and first team members."
+      >
+        <div className="p-6 text-center sm:p-10">
+          <span className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-[#e6f2e3] text-[#4d784a]">
+            <Icon icon="solar:buildings-2-bold" width="31" />
+          </span>
+          <h3 className="mt-5 text-xl font-semibold">{agencyName} is ready</h3>
+          <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-[#737870]">
+            Complete the agency profile, invite specialists, and choose which
+            members can submit proposals on behalf of the agency.
+          </p>
+          <div className="mt-6 flex flex-wrap justify-center gap-2">
+            <button type="button" className="h-11 cursor-pointer rounded-xl bg-[#252724] px-5 text-sm font-semibold text-white">
+              Open agency workspace
+            </button>
+            <button type="button" className="h-11 cursor-pointer rounded-xl border border-black/10 px-5 text-sm font-semibold">
+              Invite team members
+            </button>
+          </div>
+        </div>
+      </Panel>
+    );
+  }
+
+  if (setupStarted) {
+    return (
+      <Panel
+        title="Create an agency"
+        description="Set up the workspace clients will see when working with your team."
+      >
+        <form
+          onSubmit={(event) => {
+            event.preventDefault();
+            setCreated(true);
+          }}
+          className="grid gap-5 p-5 sm:p-6"
+        >
+          <div className="grid gap-4 sm:grid-cols-2">
+            <label className="text-xs font-semibold">
+              Agency name
+              <input required value={agencyName} onChange={(event) => setAgencyName(event.target.value)} placeholder="e.g. Northstar Digital" className="mt-2 h-11 w-full rounded-xl border border-black/10 px-3 text-sm font-normal outline-none focus:border-[#6e916a]" />
+            </label>
+            <label className="text-xs font-semibold">
+              Agency size
+              <select defaultValue="" required className="mt-2 h-11 w-full rounded-xl border border-black/10 bg-white px-3 text-sm font-normal outline-none focus:border-[#6e916a]">
+                <option value="" disabled>Select team size</option>
+                <option>2–5 members</option>
+                <option>6–10 members</option>
+                <option>11–25 members</option>
+                <option>26+ members</option>
+              </select>
+            </label>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <label className="text-xs font-semibold">
+              Primary specialty
+              <select defaultValue="" required className="mt-2 h-11 w-full rounded-xl border border-black/10 bg-white px-3 text-sm font-normal outline-none focus:border-[#6e916a]">
+                <option value="" disabled>Select a specialty</option>
+                <option>Web & software development</option>
+                <option>Design & creative</option>
+                <option>Data & AI</option>
+                <option>Marketing</option>
+                <option>Writing & content</option>
+              </select>
+            </label>
+            <label className="text-xs font-semibold">
+              Website <span className="font-normal text-[#8a8f87]">(optional)</span>
+              <input type="url" placeholder="https://agency.com" className="mt-2 h-11 w-full rounded-xl border border-black/10 px-3 text-sm font-normal outline-none focus:border-[#6e916a]" />
+            </label>
+          </div>
+          <label className="text-xs font-semibold">
+            Agency overview
+            <textarea required rows={4} placeholder="Describe your team, expertise, and the outcomes you deliver…" className="mt-2 w-full resize-none rounded-xl border border-black/10 p-3 text-sm font-normal outline-none focus:border-[#6e916a]" />
+          </label>
+          <label className="flex cursor-pointer items-start gap-3 rounded-xl bg-[#f3f5f1] p-4 text-xs leading-5 text-[#686e66]">
+            <input required type="checkbox" className="mt-0.5 h-4 w-4 shrink-0 accent-[#5f875c]" />
+            I confirm that I am authorized to create and administer this agency
+            workspace.
+          </label>
+          <div className="flex justify-end gap-2">
+            <button type="button" onClick={() => setSetupStarted(false)} className="h-11 cursor-pointer rounded-xl border border-black/10 px-5 text-sm font-semibold">
+              Back
+            </button>
+            <button type="submit" className="h-11 cursor-pointer rounded-xl bg-[#252724] px-5 text-sm font-semibold text-white">
+              Create agency
+            </button>
+          </div>
+        </form>
+      </Panel>
+    );
+  }
+
+  return (
+    <Panel
+      title="Create an agency"
+      description="Build a team workspace while keeping your individual freelancer profile."
+    >
+      <div className="grid gap-6 p-5 sm:p-6">
+        <section className="overflow-hidden rounded-2xl bg-[#252724] p-6 text-white sm:p-7">
+          <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-white/10 text-[#a8c5a1]">
+            <Icon icon="solar:buildings-2-linear" width="23" />
+          </span>
+          <h3 className="mt-5 text-2xl font-semibold tracking-[-0.035em]">
+            Win larger projects together.
+          </h3>
+          <p className="mt-2 max-w-xl text-sm leading-6 text-white/65">
+            An agency workspace lets you present a combined team, submit agency
+            proposals, coordinate delivery, and manage shared contracts.
+          </p>
+          <button type="button" onClick={() => setSetupStarted(true)} className="mt-6 h-11 cursor-pointer rounded-xl bg-white px-5 text-sm font-semibold text-[#252724]">
+            Start agency setup
+          </button>
+        </section>
+
+        <div className="grid gap-3 sm:grid-cols-3">
+          {[
+            ["Keep your profile", "Continue working independently whenever you choose.", "solar:user-circle-linear"],
+            ["Invite specialists", "Build a trusted roster and assign clear agency roles.", "solar:users-group-rounded-linear"],
+            ["Manage together", "Centralize proposals, contracts, messages, and payouts.", "solar:widget-5-linear"],
+          ].map(([title, detail, icon]) => (
+            <article key={title} className="rounded-xl border border-black/7 p-4">
+              <Icon icon={icon} width="21" className="text-[#52784f]" />
+              <h4 className="mt-3 text-sm font-semibold">{title}</h4>
+              <p className="mt-1.5 text-xs leading-5 text-[#7b8078]">{detail}</p>
+            </article>
+          ))}
+        </div>
+
+        <div className="rounded-xl bg-[#f1f3ef] p-4 text-xs leading-6 text-[#70766e]">
+          <strong className="text-[#343833]">Before you begin:</strong> Your
+          identity must remain verified. Creating an agency does not replace or
+          hide your individual freelancer account.
+        </div>
       </div>
     </Panel>
   );

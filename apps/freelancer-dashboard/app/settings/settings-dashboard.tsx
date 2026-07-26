@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { DashboardHeader } from "../_components/dashboard/dashboard-header";
 import { WorkspaceSidebar } from "../_components/dashboard/workspace-sidebar";
 import { EarningsStatementModal } from "../_components/settings/earnings-statement-modal";
@@ -10,15 +11,41 @@ import { type SettingsSectionId } from "../_components/settings/settings-data";
 import { SettingsNavigation } from "../_components/settings/settings-navigation";
 import {
   AccountPanel,
+  AgencyPanel,
   ConnectsPanel,
   EarningsPanel,
   WithdrawalPanel,
 } from "../_components/settings/settings-panels";
 
-export function SettingsDashboard() {
-  const [section, setSection] = useState<SettingsSectionId>("overview");
+const validSections: SettingsSectionId[] = [
+  "overview",
+  "connects",
+  "earnings",
+  "withdrawal",
+  "agency",
+  "tax",
+  "security",
+  "notifications",
+];
+
+export function SettingsDashboard({
+  initialSection,
+}: {
+  initialSection?: string;
+}) {
+  const [section, setSection] = useState<SettingsSectionId>(
+    validSections.includes(initialSection as SettingsSectionId)
+      ? (initialSection as SettingsSectionId)
+      : "overview",
+  );
   const [modal, setModal] = useState<"connects" | "withdraw" | null>(null);
   const [statementOpen, setStatementOpen] = useState(false);
+  const router = useRouter();
+
+  const openSection = (nextSection: SettingsSectionId) => {
+    setSection(nextSection);
+    router.push(`/settings?section=${nextSection}`, { scroll: false });
+  };
 
   return (
     <div className="min-h-svh bg-[#f4f6f2] font-(family-name:--font-dm-sans) text-[#242724]">
@@ -35,13 +62,14 @@ export function SettingsDashboard() {
 
             <div className="mt-8 grid items-start gap-5 lg:grid-cols-[235px_minmax(0,1fr)]">
               <div className="lg:sticky lg:top-24">
-                <SettingsNavigation active={section} onChange={setSection} />
+                <SettingsNavigation active={section} onChange={openSection} />
               </div>
               <div className="min-w-0">
-                {section === "overview" && <FinanceOverview onOpenSection={setSection} onBuyConnects={() => setModal("connects")} onWithdraw={() => setModal("withdraw")} />}
+                {section === "overview" && <FinanceOverview onOpenSection={openSection} onBuyConnects={() => setModal("connects")} onWithdraw={() => setModal("withdraw")} />}
                 {section === "connects" && <ConnectsPanel onBuy={() => setModal("connects")} />}
                 {section === "earnings" && <EarningsPanel onWithdraw={() => setModal("withdraw")} onDownloadStatement={() => setStatementOpen(true)} />}
                 {section === "withdrawal" && <WithdrawalPanel onWithdraw={() => setModal("withdraw")} />}
+                {section === "agency" && <AgencyPanel />}
                 {["tax", "security", "notifications"].includes(section) && <AccountPanel kind={section as "tax" | "security" | "notifications"} />}
               </div>
             </div>
