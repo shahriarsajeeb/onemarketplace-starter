@@ -11,7 +11,6 @@ type Category =
   | "Writing"
   | "Data & AI";
 type Experience = "Entry level" | "Intermediate" | "Expert";
-type ProjectType = "Hourly" | "Fixed price";
 
 interface Job {
   id: number;
@@ -20,7 +19,7 @@ interface Job {
   client: string;
   clientLocation: string;
   postedMinutesAgo: number;
-  projectType: ProjectType;
+  projectType: "Fixed price";
   budget: number;
   budgetLabel: string;
   duration: string;
@@ -41,9 +40,9 @@ const jobs: Job[] = [
     client: "Northstar Labs",
     clientLocation: "United States",
     postedMinutesAgo: 18,
-    projectType: "Hourly",
-    budget: 110,
-    budgetLabel: "$85–$110/hr",
+    projectType: "Fixed price",
+    budget: 14000,
+    budgetLabel: "$10,000–$14,000",
     duration: "3–6 months",
     experience: "Expert",
     paymentVerified: true,
@@ -61,9 +60,9 @@ const jobs: Job[] = [
     client: "Aster Technologies",
     clientLocation: "United Kingdom",
     postedMinutesAgo: 34,
-    projectType: "Hourly",
-    budget: 125,
-    budgetLabel: "$90–$125/hr",
+    projectType: "Fixed price",
+    budget: 18000,
+    budgetLabel: "$12,000–$18,000",
     duration: "1–3 months",
     experience: "Expert",
     paymentVerified: true,
@@ -121,9 +120,9 @@ const jobs: Job[] = [
     client: "Vanta Research",
     clientLocation: "Singapore",
     postedMinutesAgo: 96,
-    projectType: "Hourly",
-    budget: 170,
-    budgetLabel: "$130–$170/hr",
+    projectType: "Fixed price",
+    budget: 28000,
+    budgetLabel: "$18,000–$28,000",
     duration: "3–6 months",
     experience: "Expert",
     paymentVerified: true,
@@ -141,9 +140,9 @@ const jobs: Job[] = [
     client: "Wellmade Health",
     clientLocation: "Australia",
     postedMinutesAgo: 135,
-    projectType: "Hourly",
-    budget: 95,
-    budgetLabel: "$70–$95/hr",
+    projectType: "Fixed price",
+    budget: 12000,
+    budgetLabel: "$8,000–$12,000",
     duration: "1–3 months",
     experience: "Intermediate",
     paymentVerified: false,
@@ -181,9 +180,9 @@ const jobs: Job[] = [
     client: "Orbit Commerce",
     clientLocation: "United States",
     postedMinutesAgo: 260,
-    projectType: "Hourly",
-    budget: 65,
-    budgetLabel: "$45–$65/hr",
+    projectType: "Fixed price",
+    budget: 5000,
+    budgetLabel: "$3,000–$5,000",
     duration: "Less than 1 month",
     experience: "Entry level",
     paymentVerified: true,
@@ -209,16 +208,12 @@ const experienceLevels: Experience[] = [
   "Intermediate",
   "Expert",
 ];
-const projectTypes: ProjectType[] = ["Hourly", "Fixed price"];
-
 interface FilterProps {
   prefix: string;
   category: string;
   setCategory: (value: string) => void;
   experience: Experience[];
   toggleExperience: (value: Experience) => void;
-  projectType: ProjectType[];
-  toggleProjectType: (value: ProjectType) => void;
   verifiedOnly: boolean;
   setVerifiedOnly: (value: boolean) => void;
   lowProposalsOnly: boolean;
@@ -237,8 +232,6 @@ function FilterControls(props: FilterProps) {
     setCategory,
     experience,
     toggleExperience,
-    projectType,
-    toggleProjectType,
     verifiedOnly,
     setVerifiedOnly,
     lowProposalsOnly,
@@ -272,45 +265,27 @@ function FilterControls(props: FilterProps) {
         </div>
       </fieldset>
 
-      <fieldset className="border-t border-black/7 pt-6">
-        <legend className="text-sm font-semibold">Experience level</legend>
-        <div className="mt-3 grid gap-3">
-          {experienceLevels.map((level) => (
-            <label
-              key={level}
-              className="flex cursor-pointer items-center gap-3 text-sm text-[#62665f]"
-            >
-              <input
-                type="checkbox"
-                checked={experience.includes(level)}
-                onChange={() => toggleExperience(level)}
-                className="h-4 w-4 rounded accent-[#456f42]"
-              />
-              {level}
-            </label>
-          ))}
-        </div>
-      </fieldset>
-
-      <fieldset className="border-t border-black/7 pt-6">
-        <legend className="text-sm font-semibold">Project type</legend>
-        <div className="mt-3 grid gap-3">
-          {projectTypes.map((type) => (
-            <label
-              key={type}
-              className="flex cursor-pointer items-center gap-3 text-sm text-[#62665f]"
-            >
-              <input
-                type="checkbox"
-                checked={projectType.includes(type)}
-                onChange={() => toggleProjectType(type)}
-                className="h-4 w-4 rounded accent-[#456f42]"
-              />
-              {type}
-            </label>
-          ))}
-        </div>
-      </fieldset>
+      <div className="border-t border-black/7 pt-6">
+        <fieldset>
+          <legend className="text-sm font-semibold">Experience level</legend>
+          <div className="mt-3 grid gap-3">
+            {experienceLevels.map((level) => (
+              <label
+                key={level}
+                className="flex cursor-pointer items-center gap-3 text-sm text-[#62665f]"
+              >
+                <input
+                  type="checkbox"
+                  checked={experience.includes(level)}
+                  onChange={() => toggleExperience(level)}
+                  className="h-4 w-4 rounded accent-[#456f42]"
+                />
+                {level}
+              </label>
+            ))}
+          </div>
+        </fieldset>
+      </div>
 
       <div className="border-t border-black/7 pt-6">
         <p className="text-sm font-semibold">Client quality</p>
@@ -377,7 +352,7 @@ function FilterControls(props: FilterProps) {
           </label>
         </div>
         <p className="mt-2 text-[11px] leading-4 text-[#8a8e87]">
-          Applies to hourly maximums and fixed-price totals.
+          Applies to the total fixed-price project budget.
         </p>
       </div>
 
@@ -510,7 +485,6 @@ export function WorksDirectory() {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("All");
   const [experience, setExperience] = useState<Experience[]>([]);
-  const [projectType, setProjectType] = useState<ProjectType[]>([]);
   const [verifiedOnly, setVerifiedOnly] = useState(false);
   const [lowProposalsOnly, setLowProposalsOnly] = useState(false);
   const [minBudget, setMinBudget] = useState(0);
@@ -524,13 +498,6 @@ export function WorksDirectory() {
         ? current.filter((item) => item !== value)
         : [...current, value],
     );
-  const toggleProjectType = (value: ProjectType) =>
-    setProjectType((current) =>
-      current.includes(value)
-        ? current.filter((item) => item !== value)
-        : [...current, value],
-    );
-
   const filteredJobs = useMemo(() => {
     const query = search.trim().toLowerCase();
     const result = jobs.filter((job) => {
@@ -547,7 +514,6 @@ export function WorksDirectory() {
         (!query || searchable.includes(query)) &&
         (category === "All" || job.category === category) &&
         (!experience.length || experience.includes(job.experience)) &&
-        (!projectType.length || projectType.includes(job.projectType)) &&
         (!verifiedOnly || job.paymentVerified) &&
         (!lowProposalsOnly || job.proposals < 10) &&
         job.budget >= minBudget &&
@@ -566,7 +532,6 @@ export function WorksDirectory() {
     lowProposalsOnly,
     maxBudget,
     minBudget,
-    projectType,
     search,
     sort,
     verifiedOnly,
@@ -576,7 +541,6 @@ export function WorksDirectory() {
     setSearch("");
     setCategory("All");
     setExperience([]);
-    setProjectType([]);
     setVerifiedOnly(false);
     setLowProposalsOnly(false);
     setMinBudget(0);
@@ -588,8 +552,6 @@ export function WorksDirectory() {
     setCategory,
     experience,
     toggleExperience,
-    projectType,
-    toggleProjectType,
     verifiedOnly,
     setVerifiedOnly,
     lowProposalsOnly,

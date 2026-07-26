@@ -135,8 +135,8 @@ a {
   transform: translateX(-50%);
   background: radial-gradient(
     ellipse,
-    rgba(192, 220, 185, 0.87) 0%,
-    rgba(221, 235, 215, 0.55) 33%,
+    rgba(192, 220, 185, 0.55) 0%,
+    rgba(221, 235, 215, 0.32) 33%,
     rgba(251, 251, 249, 0) 70%
   );
   pointer-events: none;

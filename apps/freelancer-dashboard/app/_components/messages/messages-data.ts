@@ -1,0 +1,72 @@
+import type { Conversation } from "./types";
+
+export const initialConversations: Conversation[] = [
+  {
+    id: 1,
+    client: "Olivia Bennett",
+    initials: "OB",
+    company: "Northstar Labs",
+    project: "Collaborative workspace real-time features",
+    online: true,
+    unread: 2,
+    lastMessage: "Can you share an update on the notification milestone?",
+    lastMessageTime: "8m",
+    messages: [
+      { id: 1, sender: "client", text: "Hi Shahriar, the real-time document sync is working beautifully.", time: "9:18 AM" },
+      { id: 2, sender: "me", text: "Great to hear. I’ve started the comments and mentions milestone and the core event flow is already in place.", time: "9:24 AM" },
+      { id: 3, sender: "client", text: "Can you share an update on the notification milestone?", time: "10:42 AM" },
+      { id: 4, sender: "client", text: "We’d also like to review the interaction details together this week.", time: "10:43 AM" },
+    ],
+  },
+  {
+    id: 2,
+    client: "Ethan Cole",
+    initials: "EC",
+    company: "Lumen Research",
+    project: "AI-assisted research platform",
+    online: false,
+    unread: 0,
+    lastMessage: "The architecture milestone has been approved.",
+    lastMessageTime: "2h",
+    messages: [
+      { id: 1, sender: "client", text: "The architecture milestone has been approved. Excellent documentation.", time: "8:35 AM" },
+      { id: 2, sender: "me", text: "Thank you. I’ll move into the research and citation workflow today.", time: "8:41 AM" },
+    ],
+  },
+  {
+    id: 3,
+    client: "Maya Chen",
+    initials: "MC",
+    company: "Commonfolk Studio",
+    project: "Accessibility audit and remediation",
+    online: true,
+    unread: 1,
+    lastMessage: "We’ll have consolidated feedback tomorrow.",
+    lastMessageTime: "1d",
+    messages: [
+      { id: 1, sender: "me", text: "I’ve submitted the final verification report and assistive-technology results.", time: "Monday" },
+      {
+        id: 2,
+        sender: "me",
+        text: "The report includes the remaining low-priority recommendations.",
+        time: "Monday",
+        attachment: { name: "accessibility-verification.pdf", size: "2.4 MB" },
+      },
+      { id: 3, sender: "client", text: "Thanks, Shahriar. We’ll have consolidated feedback tomorrow.", time: "Yesterday" },
+    ],
+  },
+  {
+    id: 4,
+    client: "Lucas Martin",
+    initials: "LM",
+    company: "Aster Technologies",
+    project: "SaaS analytics dashboard",
+    online: false,
+    unread: 0,
+    lastMessage: "Thanks for taking the time to speak with us.",
+    lastMessageTime: "Jul 24",
+    messages: [
+      { id: 1, sender: "client", text: "Thanks for taking the time to speak with us. We’ll be in touch after the final interview.", time: "July 24" },
+    ],
+  },
+];
