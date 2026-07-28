@@ -1,0 +1,102 @@
+import type { AgencyContract } from "./types";
+
+export const initialAgencyContracts: AgencyContract[] = [
+  {
+    id: 1,
+    title: "Collaborative healthcare workspace",
+    client: "Wellmade Health",
+    clientInitials: "WH",
+    clientLocation: "United States",
+    status: "Active",
+    started: "May 18, 2026",
+    totalBudget: "$42,000",
+    earned: "$18,000",
+    escrow: "$12,000",
+    nextDeadline: "August 18",
+    progress: 68,
+    currentMilestone: "Member collaboration and notification workflows",
+    description:
+      "Design and build a secure healthcare member workspace, including discovery, product design, frontend and backend engineering, accessibility verification, and production launch.",
+    milestones: [
+      { id: 1, title: "Discovery and product architecture", amount: "$8,000", due: "June 2", status: "Paid" },
+      { id: 2, title: "Design system and member experience", amount: "$10,000", due: "June 28", status: "Paid" },
+      { id: 3, title: "Member collaboration and notifications", amount: "$12,000", due: "August 18", status: "In progress" },
+      { id: 4, title: "Verification, launch, and handoff", amount: "$12,000", due: "September 12", status: "Upcoming" },
+    ],
+  },
+  {
+    id: 2,
+    title: "AI-assisted research product",
+    client: "Lumen Research",
+    clientInitials: "LR",
+    clientLocation: "United Kingdom",
+    status: "Active",
+    started: "June 24, 2026",
+    totalBudget: "$68,500",
+    earned: "$14,500",
+    escrow: "$18,000",
+    nextDeadline: "September 12",
+    progress: 42,
+    currentMilestone: "Document intelligence and citation workflow",
+    description:
+      "Build the production application, document intelligence pipeline, evaluation workflows, observability, and launch infrastructure for an AI-assisted research platform.",
+    milestones: [
+      { id: 1, title: "Architecture and evaluation prototype", amount: "$14,500", due: "July 18", status: "Paid" },
+      { id: 2, title: "Document intelligence and citation workflow", amount: "$18,000", due: "September 12", status: "In progress" },
+      { id: 3, title: "Research workspace and collaboration", amount: "$20,000", due: "October 20", status: "Upcoming" },
+      { id: 4, title: "Production hardening and launch", amount: "$16,000", due: "November 18", status: "Upcoming" },
+    ],
+  },
+  {
+    id: 3,
+    title: "Fintech brand and product system",
+    client: "Aster Finance",
+    clientInitials: "AF",
+    clientLocation: "Singapore",
+    status: "Awaiting feedback",
+    started: "June 6, 2026",
+    totalBudget: "$19,000",
+    earned: "$15,000",
+    escrow: "$4,000",
+    nextDeadline: "Client review",
+    progress: 88,
+    currentMilestone: "Final system documentation and handoff",
+    description:
+      "Create a unified brand, messaging, and product design system for a new fintech platform, with production-ready guidance and component documentation.",
+    milestones: [
+      { id: 1, title: "Positioning and brand strategy", amount: "$6,000", due: "June 22", status: "Paid" },
+      { id: 2, title: "Visual identity and product foundations", amount: "$9,000", due: "July 18", status: "Paid" },
+      { id: 3, title: "System documentation and handoff", amount: "$4,000", due: "August 2", status: "In progress" },
+    ],
+  },
+  {
+    id: 4,
+    title: "Commerce analytics dashboard",
+    client: "Orbit Commerce",
+    clientInitials: "OC",
+    clientLocation: "Canada",
+    status: "Completed",
+    started: "January 12, 2026",
+    completed: "April 28, 2026",
+    totalBudget: "$36,000",
+    earned: "$36,000",
+    escrow: "$0",
+    nextDeadline: "Completed",
+    progress: 100,
+    currentMilestone: "All milestones completed",
+    description:
+      "Designed and delivered a responsive commerce analytics suite with an accessible design system, production frontend, and visualization documentation.",
+    milestones: [
+      { id: 1, title: "Product audit and information architecture", amount: "$8,000", due: "February 2", status: "Paid" },
+      { id: 2, title: "Design system and dashboard experience", amount: "$12,000", due: "March 4", status: "Paid" },
+      { id: 3, title: "Frontend implementation", amount: "$12,000", due: "April 10", status: "Paid" },
+      { id: 4, title: "QA and production launch", amount: "$4,000", due: "April 28", status: "Paid" },
+    ],
+  },
+];
+
+export const contractStatusStyles = {
+  Active: "bg-[#e6f2e3] text-[#477344]",
+  "Awaiting feedback": "bg-[#f2efe3] text-[#796f42]",
+  Completed: "bg-[#e7eef4] text-[#496c86]",
+} as const;

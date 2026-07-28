@@ -1,9 +1,5 @@
-import React from 'react'
+import { AgencyJobFeed } from "./_components/jobs/agency-job-feed";
 
-const Page = () => {
-  return (
-    <div>Page</div>
-  )
+export default function AgencyDashboardPage() {
+  return <AgencyJobFeed />;
 }
-
-export default Page
