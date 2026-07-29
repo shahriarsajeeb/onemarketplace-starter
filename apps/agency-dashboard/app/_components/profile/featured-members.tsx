@@ -11,26 +11,36 @@ export function FeaturedMembers() {
     ? featuredMembers
     : featuredMembers.slice(0, 4);
   const remainingCount = featuredMembers.length - 4;
+  const clientDashboardUrl =
+    process.env.NEXT_PUBLIC_CLIENT_DASHBOARD_URL ?? "http://localhost:3003";
 
   return (
     <>
       <div className="grid gap-3 sm:grid-cols-2">
         {visibleMembers.map((member) => (
-          <article
+          <Link
             key={member.id}
-            className="flex items-center gap-4 rounded-xl border border-black/7 p-4"
+            href={`${clientDashboardUrl}/talent/${member.profileId}`}
+            target="_blank"
+            aria-label={`View ${member.name}'s public profile`}
+            className="group flex items-center gap-4 rounded-xl border border-black/7 p-4 transition-colors hover:border-[#9fb99c] hover:bg-[#f6f9f4]"
           >
             <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#527a73] text-xs font-semibold text-white">
               {member.initials}
             </span>
-            <div className="min-w-0">
+            <div className="min-w-0 flex-1">
               <h3 className="text-sm font-semibold">{member.name}</h3>
               <p className="mt-1 text-xs text-[#70766e]">{member.role}</p>
               <p className="mt-1 truncate text-[10px] text-[#969a93]">
                 {member.skills}
               </p>
             </div>
-          </article>
+            <Icon
+              icon="solar:arrow-right-up-linear"
+              width="18"
+              className="shrink-0 text-[#7d847b] transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-[#52784f]"
+            />
+          </Link>
         ))}
       </div>
 

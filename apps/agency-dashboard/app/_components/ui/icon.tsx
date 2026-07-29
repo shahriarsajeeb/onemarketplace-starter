@@ -12,6 +12,8 @@ export type IconName =
   | "chevron"
   | "search"
   | "arrow"
+  | "arrow-left"
+  | "arrow-right"
   | "briefcase"
   | "calendar"
   | "chart"
@@ -60,6 +62,8 @@ const icons: Record<IconName, { default: string; active?: string }> = {
   chevron: { default: "solar:alt-arrow-down-linear" },
   search: { default: "solar:magnifer-linear" },
   arrow: { default: "solar:arrow-right-up-linear" },
+  "arrow-left": { default: "solar:arrow-left-linear" },
+  "arrow-right": { default: "solar:arrow-right-linear" },
   briefcase: { default: "solar:case-round-linear" },
   calendar: { default: "solar:calendar-linear" },
   chart: { default: "solar:chart-2-linear" },

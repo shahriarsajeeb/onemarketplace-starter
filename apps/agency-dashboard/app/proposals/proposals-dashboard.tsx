@@ -22,12 +22,14 @@ const tabs = [
   "Archived",
   "Withdrawn",
 ] as const;
+const proposalsPerPage = 3;
 
 export function ProposalsDashboard() {
   const [proposals, setProposals] = useState(initialAgencyProposals);
   const [activeTab, setActiveTab] = useState<(typeof tabs)[number]>("All");
   const [search, setSearch] = useState("");
   const [selected, setSelected] = useState<AgencyProposal | null>(null);
+  const [page, setPage] = useState(1);
   const [withdrawTarget, setWithdrawTarget] =
     useState<AgencyProposal | null>(null);
 
@@ -42,6 +44,17 @@ export function ProposalsDashboard() {
             .includes(query)),
     );
   }, [activeTab, proposals, search]);
+
+  const totalPages = Math.max(
+    1,
+    Math.ceil(filtered.length / proposalsPerPage),
+  );
+  const currentPage = Math.min(page, totalPages);
+  const pageStart = (currentPage - 1) * proposalsPerPage;
+  const visibleProposals = filtered.slice(
+    pageStart,
+    pageStart + proposalsPerPage,
+  );
 
   const count = (status: AgencyProposalStatus) =>
     proposals.filter((proposal) => proposal.status === status).length;
@@ -152,7 +165,10 @@ export function ProposalsDashboard() {
               <button
                 key={tab}
                 type="button"
-                onClick={() => setActiveTab(tab)}
+                onClick={() => {
+                  setActiveTab(tab);
+                  setPage(1);
+                }}
                 className={`shrink-0 cursor-pointer rounded-lg px-3 py-2 text-xs font-semibold ${
                   activeTab === tab
                     ? "bg-[#edf4ea] text-[#4e774b]"
@@ -167,14 +183,17 @@ export function ProposalsDashboard() {
             <Icon name="search" size={18} className="text-[#7b8078]" />
             <input
               value={search}
-              onChange={(event) => setSearch(event.target.value)}
+              onChange={(event) => {
+                setSearch(event.target.value);
+                setPage(1);
+              }}
               placeholder="Search agency proposals"
               className="min-w-0 flex-1 bg-transparent text-sm outline-none"
             />
           </label>
         </div>
 
-        {filtered.map((proposal, index) => (
+        {visibleProposals.map((proposal, index) => (
           <article
             key={proposal.id}
             className={`p-5 sm:p-6 ${
@@ -254,6 +273,58 @@ export function ProposalsDashboard() {
               Try another status or search term.
             </p>
           </div>
+        )}
+
+        {filtered.length > 0 && (
+          <footer className="flex flex-col gap-3 border-t border-black/7 bg-[#fafbf9] px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
+            <p className="text-xs text-[#7c8179]">
+              Showing {pageStart + 1}–
+              {Math.min(pageStart + proposalsPerPage, filtered.length)} of{" "}
+              {filtered.length} proposals
+            </p>
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => setPage((current) => Math.max(1, current - 1))}
+                disabled={currentPage === 1}
+                className="inline-flex h-9 items-center gap-1 rounded-xl border border-black/9 bg-white px-3 text-xs font-semibold disabled:cursor-not-allowed disabled:opacity-35"
+              >
+                <Icon name="arrow-left" size={15} />
+                Previous
+              </button>
+              {Array.from({ length: totalPages }, (_, index) => index + 1).map(
+                (pageNumber) => (
+                  <button
+                    key={pageNumber}
+                    type="button"
+                    onClick={() => setPage(pageNumber)}
+                    aria-label={`Go to proposals page ${pageNumber}`}
+                    aria-current={
+                      currentPage === pageNumber ? "page" : undefined
+                    }
+                    className={`h-9 min-w-9 rounded-xl px-2 text-xs font-semibold ${
+                      currentPage === pageNumber
+                        ? "bg-[#252724] text-white"
+                        : "border border-black/9 bg-white text-[#6e736c]"
+                    }`}
+                  >
+                    {pageNumber}
+                  </button>
+                ),
+              )}
+              <button
+                type="button"
+                onClick={() =>
+                  setPage((current) => Math.min(totalPages, current + 1))
+                }
+                disabled={currentPage === totalPages}
+                className="inline-flex h-9 items-center gap-1 rounded-xl border border-black/9 bg-white px-3 text-xs font-semibold disabled:cursor-not-allowed disabled:opacity-35"
+              >
+                Next
+                <Icon name="arrow-right" size={15} />
+              </button>
+            </div>
+          </footer>
         )}
       </section>
 

@@ -11,6 +11,7 @@ export const agencySpecialties = [
 export const featuredMembers = [
   {
     id: 1,
+    profileId: 1,
     name: "Shahriar Sajeeb",
     initials: "SK",
     role: "Founder · Full-stack product engineer",
@@ -18,6 +19,7 @@ export const featuredMembers = [
   },
   {
     id: 2,
+    profileId: 6,
     name: "Maya Robinson",
     initials: "MR",
     role: "Machine learning engineer",
@@ -25,6 +27,7 @@ export const featuredMembers = [
   },
   {
     id: 3,
+    profileId: 3,
     name: "Daniel Cho",
     initials: "DC",
     role: "Senior software engineer",
@@ -32,6 +35,7 @@ export const featuredMembers = [
   },
   {
     id: 4,
+    profileId: 4,
     name: "Amelia Morgan",
     initials: "AM",
     role: "Senior product designer",
@@ -39,6 +43,7 @@ export const featuredMembers = [
   },
   {
     id: 5,
+    profileId: 7,
     name: "Nadia Rahman",
     initials: "NR",
     role: "Product manager",
@@ -46,6 +51,7 @@ export const featuredMembers = [
   },
   {
     id: 6,
+    profileId: 8,
     name: "Lucas Martin",
     initials: "LM",
     role: "Frontend engineer",
@@ -53,6 +59,7 @@ export const featuredMembers = [
   },
   {
     id: 7,
+    profileId: 9,
     name: "Priya Nair",
     initials: "PN",
     role: "Data engineer",
@@ -60,6 +67,7 @@ export const featuredMembers = [
   },
   {
     id: 8,
+    profileId: 10,
     name: "Ethan Williams",
     initials: "EW",
     role: "Cloud infrastructure engineer",

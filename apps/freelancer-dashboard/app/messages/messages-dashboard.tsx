@@ -8,6 +8,7 @@ import { ConversationPanel } from "../_components/messages/conversation-panel";
 import { InboxList } from "../_components/messages/inbox-list";
 import { initialConversations } from "../_components/messages/messages-data";
 import type { Conversation } from "../_components/messages/types";
+import type { ContractMessage } from "../_components/messages/types";
 
 export function MessagesDashboard() {
   const [conversations, setConversations] = useState(initialConversations);
@@ -37,7 +38,10 @@ export function MessagesDashboard() {
     );
   };
 
-  const sendMessage = (text: string) => {
+  const sendMessage = (
+    text: string,
+    attachment?: { name: string; size: string; type?: string },
+  ) => {
     if (!selectedId) return;
     setConversations((current) =>
       current.map((conversation) =>
@@ -50,14 +54,41 @@ export function MessagesDashboard() {
                 ...conversation.messages,
                 {
                   id: Date.now(),
+                  kind: "text" as const,
                   sender: "me" as const,
                   text,
                   time: "Now",
+                  attachment,
                 },
               ],
             }
           : conversation,
       ),
+    );
+  };
+
+  const decideContract = (
+    messageId: number,
+    status: ContractMessage["status"],
+  ) => {
+    if (!selectedId) return;
+    setConversations((current) =>
+      current.map((conversation) => {
+        if (conversation.id !== selectedId) return conversation;
+        const accepted = status === "accepted";
+        return {
+          ...conversation,
+          lastMessage: accepted
+            ? "Contract offer accepted. Contract is now active."
+            : "Contract offer declined.",
+          lastMessageTime: "Now",
+          messages: conversation.messages.map((item) =>
+            item.id === messageId && item.kind === "contract"
+              ? { ...item, status }
+              : item,
+          ),
+        };
+      }),
     );
   };
 
@@ -102,6 +133,7 @@ export function MessagesDashboard() {
                     conversation={selected}
                     onBack={() => setSelectedId(null)}
                     onSend={sendMessage}
+                    onContractDecision={decideContract}
                   />
                 ) : (
                   <section className="grid h-full min-h-0 place-items-center rounded-2xl border border-black/8 bg-white p-8 text-center">

@@ -11,6 +11,20 @@ type SubmitWorkModalProps = {
 
 export function SubmitWorkModal({ contract, onClose }: SubmitWorkModalProps) {
   const [submitted, setSubmitted] = useState(false);
+  const [comment, setComment] = useState("");
+  const [commentError, setCommentError] = useState("");
+
+  const submitWork = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const normalizedComment = comment.trim();
+    if (normalizedComment.length < 10) {
+      setCommentError(
+        "Add a comment of at least 10 characters before submitting.",
+      );
+      return;
+    }
+    setSubmitted(true);
+  };
 
   if (submitted) {
     return (
@@ -29,7 +43,7 @@ export function SubmitWorkModal({ contract, onClose }: SubmitWorkModalProps) {
 
   return (
     <div role="dialog" aria-modal="true" aria-labelledby="submit-work-title" className="fixed inset-0 z-60 grid place-items-center bg-[#172018]/45 p-5 backdrop-blur-[2px]">
-      <form onSubmit={(event) => { event.preventDefault(); setSubmitted(true); }} className="w-full max-w-lg rounded-2xl bg-white p-6 shadow-2xl sm:p-7">
+      <form onSubmit={submitWork} className="w-full max-w-lg rounded-2xl bg-white p-6 shadow-2xl sm:p-7">
         <div className="flex items-start justify-between">
           <div>
             <p className="text-xs font-semibold tracking-wide text-[#62805f] uppercase">Milestone submission</p>
@@ -42,9 +56,32 @@ export function SubmitWorkModal({ contract, onClose }: SubmitWorkModalProps) {
           <p className="mt-1 text-sm font-semibold">{contract.currentMilestone}</p>
         </div>
         <label className="mt-5 block text-xs font-semibold">
-          Message to client
-          <textarea required rows={5} placeholder="Summarize what you completed and anything the client should know…" className="mt-2 w-full resize-none rounded-xl border border-black/10 p-3 text-sm font-normal outline-none focus:border-[#6e916a]" />
+          Comment to client <span className="text-[#a04d4d]">*</span>
+          <textarea
+            required
+            value={comment}
+            onChange={(event) => {
+              setComment(event.target.value);
+              if (commentError) setCommentError("");
+            }}
+            rows={5}
+            placeholder="Summarize what you completed, how the client can review it, and anything else they should know…"
+            aria-invalid={Boolean(commentError)}
+            className={`mt-2 w-full resize-none rounded-xl border p-3 text-sm font-normal outline-none ${
+              commentError
+                ? "border-[#c56b6b] focus:border-[#c56b6b]"
+                : "border-black/10 focus:border-[#6e916a]"
+            }`}
+          />
         </label>
+        {commentError && (
+          <p className="mt-2 text-[10px] font-medium text-[#a65050]">
+            {commentError}
+          </p>
+        )}
+        <p className="mt-2 text-[10px] leading-5 text-[#7b8179]">
+          Every milestone submission must include a clear review comment.
+        </p>
         <label className="mt-4 block text-xs font-semibold">
           Deliverable link <span className="font-normal text-[#8a8f87]">(optional)</span>
           <input type="url" placeholder="https://…" className="mt-2 h-11 w-full rounded-xl border border-black/10 px-3 text-sm font-normal outline-none focus:border-[#6e916a]" />
@@ -56,7 +93,13 @@ export function SubmitWorkModal({ contract, onClose }: SubmitWorkModalProps) {
         </label>
         <div className="mt-6 flex justify-end gap-2">
           <button type="button" onClick={onClose} className="h-11 cursor-pointer rounded-xl border border-black/10 px-5 text-sm font-semibold">Cancel</button>
-          <button type="submit" className="h-11 cursor-pointer rounded-xl bg-[#252724] px-5 text-sm font-semibold text-white">Submit work</button>
+          <button
+            type="submit"
+            disabled={!comment.trim()}
+            className="h-11 cursor-pointer rounded-xl bg-[#252724] px-5 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:opacity-40"
+          >
+            Submit work
+          </button>
         </div>
       </form>
     </div>
