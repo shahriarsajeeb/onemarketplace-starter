@@ -115,8 +115,8 @@ export function PublicMarketplaceProfile({
                 <Icon icon="solar:verified-check-bold" width="20" />
                 Identity verified
               </div>
-              <p className="mt-3 text-xs leading-5 text-[#657063]">
-                Email and marketplace identity have been verified.
+              <p className="mt-2 text-xs leading-5 text-[#657063]">
+                Securely verified through Stripe Identity.
               </p>
             </section>
           )}

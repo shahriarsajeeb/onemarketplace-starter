@@ -14,6 +14,7 @@ import {
   AgencyPanel,
   ConnectsPanel,
   EarningsPanel,
+  IdentityVerificationPanel,
   WithdrawalPanel,
 } from "../_components/settings/settings-panels";
 
@@ -24,6 +25,7 @@ const validSections: SettingsSectionId[] = [
   "withdrawal",
   "agency",
   "tax",
+  "verification",
   "security",
   "notifications",
 ];
@@ -70,6 +72,7 @@ export function SettingsDashboard({
                 {section === "earnings" && <EarningsPanel onWithdraw={() => setModal("withdraw")} onDownloadStatement={() => setStatementOpen(true)} />}
                 {section === "withdrawal" && <WithdrawalPanel onWithdraw={() => setModal("withdraw")} />}
                 {section === "agency" && <AgencyPanel />}
+                {section === "verification" && <IdentityVerificationPanel />}
                 {["tax", "security", "notifications"].includes(section) && <AccountPanel kind={section as "tax" | "security" | "notifications"} />}
               </div>
             </div>

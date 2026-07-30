@@ -58,7 +58,7 @@ export function FinanceOverview({
         <div className="mt-4 h-2 overflow-hidden rounded-full bg-[#e5e9e2]"><div className="h-full w-[82%] rounded-full bg-[#638b60]" /></div>
         <div className="mt-5 grid gap-3 sm:grid-cols-3">
           {[
-            ["Identity verified", "Complete", "solar:shield-check-linear", "security"],
+            ["Identity verification", "Manage verification", "solar:user-id-linear", "verification"],
             ["Withdrawal method", "Payoneer •••• 4821", "solar:card-transfer-linear", "withdrawal"],
             ["Tax information", "Action required", "solar:document-text-linear", "tax"],
           ].map(([title, detail, icon, section]) => (

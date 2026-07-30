@@ -135,7 +135,7 @@ function AccountMenu() {
           <div className="p-2">
             <MenuLink href="/profile" icon="solar:user-circle-linear" label="My profile" description="Preview and edit your client profile" onNavigate={() => setOpen(false)} />
             <MenuLink href="/settings?section=finances" icon="solar:wallet-money-linear" label="Finances" description="Cards and billing details" onNavigate={() => setOpen(false)} />
-            <MenuLink href="/settings?section=verifications" icon="solar:verified-check-linear" label="Verifications" description="Complete required identity checks" onNavigate={() => setOpen(false)} />
+            <MenuLink href="/settings?section=verifications" icon="solar:verified-check-linear" label="Identity verification" description="Secure verification with Stripe" onNavigate={() => setOpen(false)} />
             <MenuLink href="/settings?section=notifications" icon="solar:bell-linear" label="Notifications" description="Manage product and email alerts" onNavigate={() => setOpen(false)} />
           </div>
           <div className="border-t border-black/7 p-2">

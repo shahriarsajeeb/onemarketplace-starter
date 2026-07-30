@@ -109,7 +109,7 @@ const sections: LegalSection[] = [
           <a href="mailto:privacy@onemarketplace.io">
             privacy@onemarketplace.io
           </a>
-          . We may need to verify your identity before completing a request.
+          .
         </p>
       </>
     ),

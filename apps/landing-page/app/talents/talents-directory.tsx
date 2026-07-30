@@ -368,7 +368,7 @@ function VerifiedBadge() {
   return (
     <span
       className="inline-flex items-center gap-1 rounded-full bg-[#eaf4e7] px-2 py-1 text-[11px] font-semibold text-[#477344]"
-      title="Identity and expertise verified"
+      title="Identity verified with Stripe"
     >
       <svg viewBox="0 0 16 16" className="h-3.5 w-3.5" aria-hidden="true">
         <path

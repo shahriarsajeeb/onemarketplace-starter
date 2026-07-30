@@ -1,6 +1,5 @@
 "use client";
 
-import { Icon } from "@iconify/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { BrandMark } from "../../brand-mark";

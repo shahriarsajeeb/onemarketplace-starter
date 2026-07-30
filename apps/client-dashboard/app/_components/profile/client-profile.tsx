@@ -1,11 +1,11 @@
 "use client";
 
 import { Icon } from "@iconify/react";
+import Link from "next/link";
 import { useState } from "react";
 import { completedClientContracts } from "../data/client-data";
 
-export function ClientProfile() {
-  const [editing, setEditing] = useState(false);
+export function ClientProfile({ editing = false }: { editing?: boolean }) {
   const [saved, setSaved] = useState(false);
   const [avatarUrl, setAvatarUrl] = useState("");
   const [industry, setIndustry] = useState("Healthcare technology");
@@ -26,12 +26,8 @@ export function ClientProfile() {
               : "Preview the client identity freelancers and agencies see."}
           </p>
         </div>
-        <button
-          type="button"
-          onClick={() => {
-            setEditing((current) => !current);
-            setSaved(false);
-          }}
+        <Link
+          href={editing ? "/profile" : "/profile/edit"}
           className={`inline-flex h-11 cursor-pointer items-center justify-center gap-2 rounded-xl px-5 text-sm font-semibold ${
             editing
               ? "border border-black/10 bg-white"
@@ -43,7 +39,7 @@ export function ClientProfile() {
             width="18"
           />
           {editing ? "Preview profile" : "Edit profile"}
-        </button>
+        </Link>
       </div>
 
       {saved && (
@@ -60,7 +56,6 @@ export function ClientProfile() {
           onSubmit={(event) => {
             event.preventDefault();
             setSaved(true);
-            setEditing(false);
           }}
           className="mt-8 grid gap-5"
         >
@@ -183,13 +178,12 @@ export function ClientProfile() {
           </section>
 
           <div className="flex justify-end gap-2">
-            <button
-              type="button"
-              onClick={() => setEditing(false)}
+            <Link
+              href="/profile"
               className="h-11 rounded-xl border border-black/10 bg-white px-5 text-sm font-semibold"
             >
               Cancel
-            </button>
+            </Link>
             <button
               type="submit"
               className="h-11 rounded-xl bg-[#252724] px-5 text-sm font-semibold text-white"

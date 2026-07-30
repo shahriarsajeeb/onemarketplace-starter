@@ -2,6 +2,17 @@ import type { DashboardNotification } from "./types";
 
 export const dashboardNotifications: DashboardNotification[] = [
   {
+    id: 7,
+    icon: "solar:verified-check-linear",
+    title: "Identity verification complete",
+    description: "Your identity has been confirmed and your account is ready.",
+    time: "Just now",
+    date: "Today",
+    href: "/settings?section=verification",
+    category: "Account",
+    unread: false,
+  },
+  {
     id: 1,
     icon: "solar:chat-round-dots-linear",
     title: "New message from Northstar Labs",
@@ -65,17 +76,6 @@ export const dashboardNotifications: DashboardNotification[] = [
     date: "Earlier",
     href: "/my-proposals",
     category: "Proposals",
-    unread: false,
-  },
-  {
-    id: 7,
-    icon: "solar:shield-check-linear",
-    title: "Identity verification complete",
-    description: "Your identity has been verified and is visible on your public profile.",
-    time: "July 20",
-    date: "Earlier",
-    href: "/my-profile",
-    category: "Account",
     unread: false,
   },
 ];

@@ -33,7 +33,7 @@ export default function AgencyProfilePage() {
           </p>
         </div>
         <Link
-          href="/settings?section=profile"
+          href="/profile/edit"
           className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-[#252724] px-5 text-sm font-semibold text-white"
         >
           <Icon icon="solar:pen-2-linear" width="18" />

@@ -78,7 +78,7 @@ function SectionCard({
   );
 }
 
-function ProfilePreview({ onEdit }: { onEdit: () => void }) {
+function ProfilePreview() {
   const completedJobs = [
     {
       title: "Build a collaborative analytics dashboard",
@@ -129,14 +129,13 @@ function ProfilePreview({ onEdit }: { onEdit: () => void }) {
               My public profile
             </p>
           </div>
-          <button
-            type="button"
-            onClick={onEdit}
+          <Link
+            href="/profile/edit"
             className="inline-flex h-11 cursor-pointer items-center justify-center gap-2 rounded-xl bg-[#252724] px-5 text-sm font-semibold text-white hover:bg-[#3b3e39]"
           >
             <Icon icon="solar:pen-new-square-linear" width="18" />
             Edit profile
-          </button>
+          </Link>
         </div>
 
         <div className="mt-6 grid items-start gap-6 lg:grid-cols-[290px_minmax(0,1fr)]">
@@ -203,7 +202,7 @@ function ProfilePreview({ onEdit }: { onEdit: () => void }) {
 
             <section className="rounded-2xl border border-[#d2dfcf] bg-[#edf4ea] p-5">
               <div className="flex items-center gap-2 text-sm font-semibold text-[#476f44]">
-                <Icon icon="solar:verified-check-bold" width="20" />
+                <Icon icon="solar:shield-check-bold" width="20" />
                 Identity verified
               </div>
               <div className="mt-4 grid gap-3 text-xs text-[#657063]">
@@ -393,15 +392,18 @@ function ProfilePreview({ onEdit }: { onEdit: () => void }) {
   );
 }
 
-export function ProfileEditor() {
-  const [isEditing, setIsEditing] = useState(false);
+export function ProfileEditor({
+  initialEditing = false,
+}: {
+  initialEditing?: boolean;
+}) {
+  const isEditing = initialEditing;
   const [activeSection, setActiveSection] = useState("profile-details");
   const [skills, setSkills] = useState(initialSkills);
   const [skillInput, setSkillInput] = useState("");
   const [portfolio, setPortfolio] = useState(initialPortfolio);
   const [showPortfolioForm, setShowPortfolioForm] = useState(false);
   const [saved, setSaved] = useState(false);
-  const [verifiedItems, setVerifiedItems] = useState(["email"]);
 
   const addSkill = () => {
     const skill = skillInput.trim();
@@ -438,14 +440,9 @@ export function ProfileEditor() {
     window.setTimeout(() => setSaved(false), 3000);
   };
 
-  const verify = (item: string) =>
-    setVerifiedItems((current) =>
-      current.includes(item) ? current : [...current, item],
-    );
-
   const strength = Math.min(
     100,
-    72 + skills.length + portfolio.length * 3 + verifiedItems.length * 3,
+    75 + skills.length + portfolio.length * 3,
   );
 
   useEffect(() => {
@@ -456,7 +453,6 @@ export function ProfileEditor() {
       "professional",
       "skills",
       "portfolio",
-      "verification",
     ];
     const sections = sectionIds
       .map((id) => document.getElementById(id))
@@ -483,7 +479,7 @@ export function ProfileEditor() {
   }, [isEditing]);
 
   if (!isEditing) {
-    return <ProfilePreview onEdit={() => setIsEditing(true)} />;
+    return <ProfilePreview />;
   }
 
   return (
@@ -507,14 +503,13 @@ export function ProfileEditor() {
               clients.
             </p>
           </div>
-          <button
-            type="button"
-            onClick={() => setIsEditing(false)}
+          <Link
+            href="/my-profile"
             className="inline-flex h-11 items-center justify-center gap-2 rounded-xl border border-black/10 bg-white px-4 text-sm font-semibold hover:bg-black/3"
           >
             Preview public profile
             <Icon icon="solar:arrow-right-up-linear" width="18" />
-          </button>
+          </Link>
         </div>
 
         <div className="mt-8 grid items-start gap-6 xl:grid-cols-[260px_minmax(0,1fr)]">
@@ -554,7 +549,6 @@ export function ProfileEditor() {
                 ["professional", "solar:case-round-linear", "Professional"],
                 ["skills", "solar:stars-minimalistic-linear", "Skills"],
                 ["portfolio", "solar:gallery-wide-linear", "Portfolio"],
-                ["verification", "solar:verified-check-linear", "Verification"],
               ].map(([href, icon, label]) => (
                 <a
                   key={href}
@@ -792,80 +786,6 @@ export function ProfileEditor() {
                     Image, details, skills, and project link
                   </span>
                 </button>
-              </div>
-            </SectionCard>
-
-            <SectionCard
-              id="verification"
-              title="Account verification"
-              description="Build trust with clients and keep your account secure."
-            >
-              <div className="grid gap-3">
-                {[
-                  [
-                    "email",
-                    "solar:letter-linear",
-                    "Email address",
-                    "shahriar@example.com",
-                  ],
-                  [
-                    "identity",
-                    "solar:user-id-linear",
-                    "Government ID",
-                    "Verify your identity with a valid document",
-                  ],
-                  [
-                    "payment",
-                    "solar:card-linear",
-                    "Payment method",
-                    "Add a payout method in your own name",
-                  ],
-                ].map(([id, icon, title, text]) => {
-                  const isVerified = verifiedItems.includes(id);
-                  return (
-                    <div
-                      key={id}
-                      className="flex flex-col gap-4 rounded-xl border border-black/8 p-4 sm:flex-row sm:items-center"
-                    >
-                      <span
-                        className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${isVerified ? "bg-[#e8f3e5] text-[#527c4f]" : "bg-[#f1f2ef] text-[#70766e]"}`}
-                      >
-                        <Icon icon={icon} width="21" />
-                      </span>
-                      <div className="min-w-0 flex-1">
-                        <div className="flex items-center gap-2">
-                          <h3 className="text-sm font-semibold">{title}</h3>
-                          {isVerified && (
-                            <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-[#527c4f]">
-                              <Icon
-                                icon="solar:verified-check-bold"
-                                width="14"
-                              />{" "}
-                              Verified
-                            </span>
-                          )}
-                        </div>
-                        <p className="mt-1 text-xs text-[#7c8179]">{text}</p>
-                      </div>
-                      {!isVerified && (
-                        <button
-                          type="button"
-                          onClick={() => verify(id)}
-                          className="cursor-pointer rounded-xl border border-black/10 px-4 py-2.5 text-xs font-semibold hover:bg-black/3"
-                        >
-                          Verify now
-                        </button>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-              <div className="mt-5 rounded-xl bg-[#f3f6f1] p-4 text-xs leading-5 text-[#697067]">
-                <strong className="text-[#343833]">
-                  Your information stays private.
-                </strong>{" "}
-                Verification details are used to confirm your account and are
-                not displayed publicly.
               </div>
             </SectionCard>
 

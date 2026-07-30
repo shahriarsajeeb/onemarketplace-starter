@@ -87,8 +87,7 @@ const initialNotifications: Notification[] = [
     id: 6,
     icon: "solar:verified-check-linear",
     title: "Identity verification required",
-    description:
-      "Verify your identity before making your first hire.",
+    description: "Complete the secure Stripe Identity check before your first hire.",
     time: "July 25",
     date: "Earlier",
     href: "/settings?section=verifications",

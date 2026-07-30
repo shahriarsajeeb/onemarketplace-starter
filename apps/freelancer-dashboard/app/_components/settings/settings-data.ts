@@ -5,6 +5,7 @@ export const settingsSections = [
   { id: "withdrawal", label: "Withdrawal methods", icon: "solar:card-transfer-linear" },
   { id: "agency", label: "Agency", icon: "solar:buildings-2-linear" },
   { id: "tax", label: "Tax information", icon: "solar:document-text-linear" },
+  { id: "verification", label: "Identity verification", icon: "solar:user-id-linear" },
   { id: "security", label: "Password & security", icon: "solar:shield-keyhole-linear" },
   { id: "notifications", label: "Notifications", icon: "solar:bell-linear" },
 ] as const;

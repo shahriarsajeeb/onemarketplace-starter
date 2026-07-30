@@ -42,16 +42,16 @@ export function OverviewPanel({
 }) {
   const items = [
     {
-      title: "Agency profile",
-      detail: "Northstar Digital · 78% complete",
-      section: "profile" as const,
-      icon: "solar:buildings-2-linear",
-    },
-    {
       title: "Members & access",
       detail: "8 active agency members",
       section: "members" as const,
       icon: "solar:users-group-rounded-linear",
+    },
+    {
+      title: "Identity verification",
+      detail: "Agency owner verified through Stripe",
+      section: "verification" as const,
+      icon: "solar:verified-check-linear",
     },
     {
       title: "Password & security",
@@ -466,6 +466,52 @@ export function SecurityPanel() {
             </button>
           </div>
         ))}
+      </div>
+    </Panel>
+  );
+}
+
+export function VerificationPanel() {
+  const [status, setStatus] = useState<"verified" | "processing">("verified");
+
+  return (
+    <Panel
+      title="Identity verification"
+      description="The agency owner completes identity verification securely through Stripe Identity."
+    >
+      <div className="p-5 sm:p-6">
+        <div className="flex flex-wrap items-center gap-4 rounded-xl border border-black/8 p-4">
+          <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#edf4ea] text-[#52784f]">
+            <Icon icon="solar:user-id-linear" width="22" />
+          </span>
+          <div className="min-w-0 flex-1">
+            <p className="text-sm font-semibold">Shahriar Sajeeb</p>
+            <p className="mt-1 text-xs text-[#7b8078]">
+              {status === "verified"
+                ? "Agency owner identity verified by Stripe."
+                : "Stripe is processing the verification."}
+            </p>
+          </div>
+          {status === "verified" ? (
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-[#edf4ea] px-3 py-1.5 text-xs font-semibold text-[#52784f]">
+              <Icon icon="solar:verified-check-bold" width="15" />
+              Verified
+            </span>
+          ) : (
+            <button
+              type="button"
+              data-stripe-identity-trigger
+              onClick={() => setStatus("processing")}
+              className="h-10 rounded-xl bg-[#252724] px-4 text-xs font-semibold text-white"
+            >
+              Verify with Stripe
+            </button>
+          )}
+        </div>
+        <p className="mt-4 rounded-xl bg-[#f3f6f1] p-4 text-xs leading-5 text-[#667064]">
+          Stripe securely handles identity information. OneMarketplace does
+          not manually collect or review identity documents.
+        </p>
       </div>
     </Panel>
   );

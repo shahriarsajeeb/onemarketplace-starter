@@ -9,7 +9,7 @@ const navigation = [
   { id: "finances", label: "Finances", description: "Cards and billing details", icon: "solar:wallet-money-linear" },
   { id: "company", label: "Company profile", description: "Business information", icon: "solar:buildings-2-linear" },
   { id: "notifications", label: "Notifications", description: "Email and product alerts", icon: "solar:bell-linear" },
-  { id: "verifications", label: "Verifications", description: "Identity and contact checks", icon: "solar:verified-check-linear" },
+  { id: "verifications", label: "Verification", description: "Secure identity check by Stripe", icon: "solar:verified-check-linear" },
   { id: "account", label: "Account", description: "Login and account controls", icon: "solar:user-id-linear" },
 ];
 
@@ -64,7 +64,7 @@ export function ClientSettings({ initialSection }: { initialSection: string }) {
           {initialSection === "finances" && <Finances cards={cards} setCards={setCards} onAddCard={() => setCardModalOpen(true)} onNotice={saveNotice} />}
           {initialSection === "company" && <CompanySettings onSave={() => saveNotice("Company profile updated.")} />}
           {initialSection === "notifications" && <NotificationSettings onSave={() => saveNotice("Notification preferences saved.")} />}
-          {initialSection === "verifications" && <VerificationSettings onNotice={saveNotice} />}
+          {initialSection === "verifications" && <StripeVerification onNotice={saveNotice} />}
           {initialSection === "account" && <AccountSettings onNotice={saveNotice} />}
         </div>
       </div>
@@ -94,7 +94,7 @@ function Overview({ cards }: { cards: PaymentCard[] }) {
   const items = [
     { label: "Payment methods", value: `${cards.length} saved`, href: "finances", icon: "solar:card-linear" },
     { label: "Company profile", value: "Wellmade Health", href: "company", icon: "solar:buildings-2-linear" },
-    { label: "Identity verification", value: "Action required", href: "verifications", icon: "solar:verified-check-linear" },
+    { label: "Identity verification", value: "Stripe Identity", href: "verifications", icon: "solar:verified-check-linear" },
     { label: "Account", value: "Login and account controls", href: "account", icon: "solar:user-id-linear" },
   ];
   return <div className="grid gap-4 sm:grid-cols-2">{items.map((item) => <Link key={item.label} href={`/settings?section=${item.href}`} className="rounded-2xl border border-black/8 bg-white p-5 hover:bg-[#fafbf9]"><span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#edf4ea] text-[#52784f]"><Icon icon={item.icon} width="20" /></span><h2 className="mt-5 font-semibold">{item.label}</h2><p className="mt-1 text-xs text-[#777d75]">{item.value}</p><span className="mt-5 inline-flex items-center gap-1 text-xs font-semibold text-[#52784f]">Manage <Icon icon="solar:arrow-right-linear" width="13" /></span></Link>)}</div>;
@@ -132,25 +132,16 @@ function NotificationSettings({ onSave }: { onSave: () => void }) {
   return <SectionCard title="Notification preferences" description="Choose the marketplace activity that should reach your inbox."><div className="divide-y divide-black/7">{["New proposals on my jobs", "Messages from talent", "Contract and milestone updates", "Payment and billing activity", "Product news and recommendations"].map((label, index) => <label key={label} className="flex items-center justify-between gap-4 py-4 first:pt-0"><span className="text-sm">{label}</span><input type="checkbox" defaultChecked={index < 4} className="h-4 w-4 accent-[#5d8759]" /></label>)}</div><button type="button" onClick={onSave} className="mt-3 h-10 rounded-xl bg-[#252724] px-4 text-xs font-semibold text-white">Save preferences</button></SectionCard>;
 }
 
-function VerificationSettings({ onNotice }: { onNotice: (message: string) => void }) {
-  const [identityStatus, setIdentityStatus] = useState<"required" | "pending">("required");
-  return <div className="grid gap-4">
-    <SectionCard title="Client verification" description="Clients must verify their identity before hiring talent or funding a contract.">
-      <div className="grid gap-3">
-        <VerificationRow icon="solar:letter-linear" title="Email address" description="olivia@wellmade.health" status="Verified" />
-        <div className="flex flex-wrap items-center gap-4 rounded-xl border border-black/8 p-4">
-          <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#f3f5f1] text-[#52784f]"><Icon icon="solar:user-id-linear" width="20" /></span>
-          <div className="min-w-0 flex-1"><p className="text-sm font-semibold">Government-issued identity</p><p className="mt-1 text-[10px] text-[#7c8179]">{identityStatus === "required" ? "Required before your first hire" : "Documents submitted for review"}</p></div>
-          {identityStatus === "required" ? <button type="button" onClick={() => { setIdentityStatus("pending"); onNotice("Identity documents submitted for review."); }} className="h-9 rounded-xl bg-[#252724] px-4 text-xs font-semibold text-white">Start verification</button> : <span className="rounded-full bg-[#f5f0de] px-2.5 py-1 text-[10px] font-semibold text-[#82723f]">Pending review</span>}
-        </div>
-      </div>
-      <div className="mt-5 flex gap-3 rounded-xl bg-[#f3f6f1] p-4 text-xs leading-5 text-[#667064]"><Icon icon="solar:shield-check-linear" width="19" className="shrink-0 text-[#52784f]" /><p>Your identity information is used only for trust and safety checks and is not shown publicly.</p></div>
-    </SectionCard>
-  </div>;
-}
-
-function VerificationRow({ icon, title, description, status }: { icon: string; title: string; description: string; status: string }) {
-  return <div className="flex items-center gap-4 rounded-xl border border-black/8 p-4"><span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#edf4ea] text-[#52784f]"><Icon icon={icon} width="20" /></span><div className="min-w-0 flex-1"><p className="text-sm font-semibold">{title}</p><p className="mt-1 text-[10px] text-[#7c8179]">{description}</p></div><span className="inline-flex items-center gap-1 rounded-full bg-[#edf4ea] px-2.5 py-1 text-[10px] font-semibold text-[#52784f]"><Icon icon="solar:verified-check-bold" width="13" />{status}</span></div>;
+function StripeVerification({ onNotice }: { onNotice: (message: string) => void }) {
+  const [status, setStatus] = useState<"required" | "processing">("required");
+  return <SectionCard title="Identity verification" description="Identity checks are securely completed and processed by Stripe Identity.">
+    <div className="flex flex-wrap items-center gap-4 rounded-xl border border-black/8 p-4">
+      <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#edf4ea] text-[#52784f]"><Icon icon="solar:user-id-linear" width="22" /></span>
+      <div className="min-w-0 flex-1"><p className="text-sm font-semibold">Verify your identity</p><p className="mt-1 text-[10px] leading-5 text-[#7c8179]">{status === "required" ? "Required before making your first hire." : "Stripe is processing your verification."}</p></div>
+      {status === "required" ? <button type="button" data-stripe-identity-trigger onClick={() => { setStatus("processing"); onNotice("Stripe Identity verification started."); }} className="inline-flex h-10 items-center gap-2 rounded-xl bg-[#252724] px-4 text-xs font-semibold text-white"><Icon icon="solar:shield-check-linear" width="17" />Verify with Stripe</button> : <span className="rounded-full bg-[#f5f0de] px-3 py-1.5 text-[10px] font-semibold text-[#82723f]">Processing</span>}
+    </div>
+    <div className="mt-5 flex gap-3 rounded-xl bg-[#f3f6f1] p-4 text-xs leading-5 text-[#667064]"><Icon icon="solar:lock-keyhole-linear" width="18" className="shrink-0 text-[#52784f]" /><p>OneMarketplace.io does not manually collect or review identity documents. Stripe securely handles the verification session and returns only its result.</p></div>
+  </SectionCard>;
 }
 
 function AccountSettings({ onNotice }: { onNotice: (message: string) => void }) {

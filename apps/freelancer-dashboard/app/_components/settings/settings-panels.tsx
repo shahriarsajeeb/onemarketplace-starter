@@ -75,6 +75,58 @@ export function WithdrawalPanel({ onWithdraw }: { onWithdraw: () => void }) {
   );
 }
 
+export function IdentityVerificationPanel() {
+  const [status, setStatus] = useState<"required" | "processing">("required");
+
+  return (
+    <Panel
+      title="Identity verification"
+      description="Verify your identity to build trust and unlock marketplace contracts."
+    >
+      <div className="grid gap-5 p-5 sm:p-6">
+        <div className="flex flex-col gap-4 rounded-2xl border border-black/8 p-5 sm:flex-row sm:items-center">
+          <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#edf4ea] text-[#52784f]">
+            <Icon icon="solar:user-id-linear" width="24" />
+          </span>
+          <div className="min-w-0 flex-1">
+            <h3 className="text-sm font-semibold">Verify your identity</h3>
+            <p className="mt-1 text-xs leading-5 text-[#7b8078]">
+              {status === "required"
+                ? "Complete verification before accepting your first contract."
+                : "Your verification is being processed."}
+            </p>
+          </div>
+          {status === "required" ? (
+            <button
+              type="button"
+              data-stripe-identity-trigger
+              onClick={() => setStatus("processing")}
+              className="h-11 cursor-pointer rounded-xl bg-[#252724] px-5 text-sm font-semibold text-white"
+            >
+              Start verification
+            </button>
+          ) : (
+            <span className="self-start rounded-full bg-[#f5f0de] px-3 py-1.5 text-xs font-semibold text-[#82723f] sm:self-auto">
+              Processing
+            </span>
+          )}
+        </div>
+        <div className="flex gap-3 rounded-xl bg-[#f3f6f1] p-4 text-xs leading-5 text-[#667064]">
+          <Icon
+            icon="solar:shield-check-linear"
+            width="19"
+            className="shrink-0 text-[#52784f]"
+          />
+          <p>
+            Verification is securely handled by Stripe. OneMarketplace does
+            not store your identity document.
+          </p>
+        </div>
+      </div>
+    </Panel>
+  );
+}
+
 export function AgencyPanel() {
   const [setupStarted, setSetupStarted] = useState(false);
   const [created, setCreated] = useState(false);
@@ -213,9 +265,9 @@ export function AgencyPanel() {
         </div>
 
         <div className="rounded-xl bg-[#f1f3ef] p-4 text-xs leading-6 text-[#70766e]">
-          <strong className="text-[#343833]">Before you begin:</strong> Your
-          identity must remain verified. Creating an agency does not replace or
-          hide your individual freelancer account.
+          <strong className="text-[#343833]">Before you begin:</strong> Creating
+          an agency does not replace or hide your individual freelancer
+          account.
         </div>
       </div>
     </Panel>
